@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import styles from "../app/card.module.css"
 
 const Card = ({ items }) => {
   return (
@@ -24,7 +25,7 @@ const Card = ({ items }) => {
           {items.title}
         </h3>
 
-        <p className="text-emerald-600 font-bold text-xl mt-1">
+        <p className={styles['card__price']}>
           ${items.price}
         </p>
 

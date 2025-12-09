@@ -1,10 +1,32 @@
+import next from "next";
+import { revalidatePath } from "next/cache";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import React from "react";
+
+
+const revalidate = 60;
+
+export async function generateStaticParams(){
+  const response = await fetch("https://dummyjson.com/products");
+  const data = await response.json();
+
+  const products = data.products;
+
+  return products.map((item)=>({
+    id : item.id.toString()
+  }))
+}
 
 const page = async ({ params }) => {
   const { id } = await params;
-  const response = await fetch(`https://dummyjson.com/products/${id}`);
+  const response = await fetch(`https://dummyjson.com/products/${id}`,
+    {next:{revalidate:revalidate}}
+  );
   const data = await response.json();
+  if(data.hasOwnProperty('message')){
+    notFound();
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-8 py-10">

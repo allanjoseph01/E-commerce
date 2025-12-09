@@ -1,12 +1,16 @@
 import Link from 'next/link'
 import React from 'react'
+import styles from '../app/register.module.css'
 
 const Navbar = () => {
+
   return (
-    <nav className='grid grid-cols-3 justify-between px-10 pt-3 pb-2 border-b'>
-      <div className='cursor-pointer flex items-center'>
-        Home
-      </div>
+    <nav className='grid grid-cols-3 justify-between px-10 pt-3 pb-2 border-b border-black/30 sticky top-0 backdrop-blur-xl bg-white/20 z-50'>
+      <Link href="/">
+        <div className='cursor-pointer flex items-center'>
+          Home
+        </div>
+      </Link>
       <div className='flex justify-around items-center'>
         <Link href="/product">
           <div className='cursor-pointer hover:text-blue-900'>
@@ -22,7 +26,7 @@ const Navbar = () => {
       </div>
       <div className='flex justify-end'>
         <Link href="/register">
-          <button className='bg-blue-600 text-white text-sm p-2 rounded-xl cursor-pointer hover:border hover:border-black'>
+          <button className={`${styles.Button} ${styles['Button-2']}`}>
             Register
           </button>
         </Link>
