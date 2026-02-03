@@ -7,6 +7,12 @@ import React from "react";
 
 const revalidate = 60;
 
+async function fetchBase64(url) {
+  const response = await fetch(url);
+  const buffer = await response.arrayBuffer();
+  return `data:image/jpeg;base64,${Buffer.from(buffer).toString("base64")}`;
+}
+
 export async function generateStaticParams(){
   const response = await fetch("https://dummyjson.com/products");
   const data = await response.json();
@@ -24,6 +30,7 @@ const page = async ({ params }) => {
     {next:{revalidate:revalidate}}
   );
   const data = await response.json();
+  const imgBase64 = await fetchBase64(data.images[0]);
   if(data.hasOwnProperty('message')){
     notFound();
   }
@@ -36,8 +43,15 @@ const page = async ({ params }) => {
           bg-white p-6 rounded-2xl shadow-lg border 
           flex items-center justify-center
         ">
-          <Image
+          {/* <Image
             src={data.images[0]}
+            alt={data.title}
+            width={500}
+            height={500}
+            className="rounded-xl object-cover"
+          /> */}
+          <img
+            src={imgBase64}
             alt={data.title}
             width={500}
             height={500}

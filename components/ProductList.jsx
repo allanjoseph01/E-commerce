@@ -2,22 +2,23 @@
 import React, { useState } from 'react'
 import Filter from './Filter';
 import Card from './Card';
+import SearchBar from './SearchBar';
+import { Provider, useSelector } from 'react-redux';
+import { store } from '@/store/store';
 
-const ProductList = ({products}) => {
-  const [minRating , setMinRating] = useState(0);
-  const [searchText , setSearchText] = useState("");
+const InnerProductList = ({ products }) => {
+  const [minRating, setMinRating] = useState(0);
+  const query = useSelector((state) => state.search?.query || "");
 
   const filtered = products
-    .filter((p)=>p.rating>=minRating)
-    .filter((p)=>p.title.toLowerCase().includes(searchText.toLowerCase()))
+    .filter((p) => p.rating >= minRating)
+    .filter((p) => p.title.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <div>
       <div className='flex gap-5 items-center'>
         <Filter onChangeAction={setMinRating} />
-        <div>
-          <input type="text" placeholder='Search Product' onChange={(e)=>setSearchText(e.target.value)} value={searchText} className='w-80 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400' />
-        </div>
+        <SearchBar />
       </div>
       <div className='mx-auto mt-5 px-1'>
         <div className='flex flex-wrap justify-center'>
@@ -31,6 +32,14 @@ const ProductList = ({products}) => {
         </div>
       </div>
     </div>
+  )
+}
+
+const ProductList = ({ products }) => {
+  return (
+    <Provider store={store}>
+      <InnerProductList products={products} />
+    </Provider>
   )
 }
 

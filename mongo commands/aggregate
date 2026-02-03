@@ -1,0 +1,60 @@
+db.students.aggregate([{$group : {
+  _id: "$city_id",
+  totalCount : {$sum : 1}
+}}])
+
+
+
+db.students.aggregate([
+  {
+    $match : {city_id : {$gt : 3}}
+  },
+  {$group : {
+  	_id: "$city_id",
+  	totalCount : {$sum : 1}
+	}}
+])
+
+
+
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "cities",
+      localField: "city_id",
+      foreignField: "_id",
+      as: "city"
+    }
+  },
+  {
+    $match : {city_id : {$gt : 3}}
+  },
+  {$group : {
+  	_id: "$city_id",
+  	totalCount : {$sum : 1}
+	}}
+])
+
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "cities",
+      localField: "city_id",
+      foreignField: "_id",
+      as: "city"
+    }
+  },
+  { $unwind: "$city" },
+  {
+    $match : {city_id : {$gt : 3}}
+  },
+  {
+    $project: {
+      name: 1,
+      score: 1,
+      status: {
+        $cond: [{ $gte: ["$score", 80] }, "Pass", "Fail"]
+      }
+    }
+  }
+])

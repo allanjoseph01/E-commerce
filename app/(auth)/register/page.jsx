@@ -12,6 +12,10 @@ const Register = () => {
     password: "",
   });
 
+  const handleSubmit = ()=>{
+    
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-700 to-teal-800 p-5">
       <form
